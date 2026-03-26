@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merge3D</title>
+    <meta
+      name="description"
+      content="Merge3D: Efficient 3D Multimodal LLMs via Joint 2D-3D Token Merging"
+    />
+    <meta property="og:title" content="Merge3D" />
+    <meta
+      property="og:description"
+      content="Merge3D: Efficient 3D Multimodal LLMs via Joint 2D-3D Token Merging"
+    />
+    <meta property="og:url" content="https://tianbo-pan.github.io/merge3d/" />
+    <meta
+      property="og:image"
+      content="https://tianbo-pan.github.io/merge3d/assets/Teaser_figure.png"
+    />
+    <meta property="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://tianbo-pan.github.io/merge3d/" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a class="brand" href="#home">Merge3D</a>
+        <nav class="nav-links">
+          <a href="#overview">Overview</a>
+          <a href="#method">Method</a>
+          <a href="#results">Results</a>
+          <a href="#visuals">Visuals</a>
+          <a href="#bibtex">BibTeX</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="container hero-inner">
+          <p class="eyebrow">Project Page</p>
+          <h1>
+            Merge3D: Efficient 3D Multimodal LLMs via Joint 2D-3D Token
+            Merging
+          </h1>
+          <p class="subtitle">
+            Geometry-aware token compression for dual-encoder 3D video MLLMs.
+          </p>
+
+          <div class="authors">
+            <span>Tianbo Pan<sup>1</sup></span>
+            <span>Xingyi Yang<sup>2,1</sup></span>
+            <span>Xinchao Wang<sup>1</sup></span>
+          </div>
+          <p class="affiliations">
+            <span><sup>1</sup>National University of Singapore</span>
+            <span><sup>2</sup>The Hong Kong Polytechnic University</span>
+          </p>
+
+          <div class="button-row">
+            <a class="button button-primary" href="./assets/pdfs/Teaser_figure.pdf" target="_blank" rel="noreferrer">Teaser PDF</a>
+            <a class="button" href="https://lavi-lab.github.io/VG-LLM/" target="_blank" rel="noreferrer">VG-LLM</a>
+            <span class="button button-disabled" aria-disabled="true">Paper Coming Soon</span>
+            <span class="button button-disabled" aria-disabled="true">arXiv Coming Soon</span>
+            <span class="button button-disabled" aria-disabled="true">Code Coming Soon</span>
+          </div>
+
+          <p class="helper-text">
+            This page is styled after the VG-LLM project page, with content
+            adapted to Merge3D.
+          </p>
+        </div>
+      </section>
+
+      <section class="section section-tight">
+        <div class="container">
+          <figure class="hero-figure">
+            <a href="./assets/pdfs/Teaser_figure.pdf" target="_blank" rel="noreferrer">
+              <img src="./assets/Teaser_figure.png" alt="Merge3D teaser figure" />
+            </a>
+            <figcaption>
+              Performance comparison of Merge3D and baselines across token
+              retention rates (30%, 10%, 5%).
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="overview">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Overview</p>
+            <h2>Abstract</h2>
+          </div>
+          <div class="card prose">
+            <p>
+              Multimodal Large Language Models (MLLMs) with 3D geometry priors
+              show strong capability in 3D scene understanding, but long
+              multi-view visual token sequences make them expensive to run.
+              Merge3D introduces a geometry-aware token merging framework that
+              combines 2D semantic saliency and 3D geometric consistency.
+            </p>
+            <p>
+              Our Semantic–Geometric Token Merger (SemGeo Merger) uses 2D
+              attention to select dominant tokens, then aggregates contextual
+              tokens with a hybrid 2D+3D similarity. This preserves spatially
+              critical structure and inter-frame correspondences even under
+              aggressive compression.
+            </p>
+            <p>
+              Merge3D reduces visual tokens by up to 70% and delivers up to
+              ~3.1× faster inference while retaining strong performance on 3D
+              grounding, captioning, and spatial reasoning benchmarks including
+              Scan2Cap, CV-Bench, and BLINK.
+            </p>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <h3>70%</h3>
+              <p>maximum visual token reduction</p>
+            </article>
+            <article class="stat-card">
+              <h3>3.1×</h3>
+              <p>measured end-to-end inference speedup</p>
+            </article>
+            <article class="stat-card">
+              <h3>SemGeo</h3>
+              <p>joint 2D semantic + 3D geometric token merging</p>
+            </article>
+            <article class="stat-card">
+              <h3>3 tasks</h3>
+              <p>grounding, captioning, and spatial reasoning</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="method">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Method</p>
+            <h2>Semantic–Geometric Token Merger</h2>
+          </div>
+
+          <div class="two-column">
+            <div class="prose">
+              <p>
+                Merge3D is built on top of a dual-encoder 3D video MLLM. A 2D
+                visual encoder captures semantic detail, while a 3D geometry
+                encoder captures spatial structure and cross-frame
+                correspondence.
+              </p>
+              <p>
+                Instead of compressing tokens with only semantic similarity,
+                Merge3D first keeps semantically important dominant tokens using
+                2D attention, then merges remaining contextual tokens according
+                to a hybrid similarity that respects both appearance and
+                geometry.
+              </p>
+              <ul class="feature-list">
+                <li>2D attention selects dominant, query-relevant tokens.</li>
+                <li>3D features preserve geometry-aware neighborhoods.</li>
+                <li>
+                  Hybrid merging balances grounding fidelity and reasoning
+                  performance.
+                </li>
+                <li>
+                  The base visual encoders and decoder stay frozen; Merge3D is
+                  inserted as a token compression module.
+                </li>
+              </ul>
+            </div>
+
+            <figure class="image-card">
+              <a href="./assets/pdfs/Framework.pdf" target="_blank" rel="noreferrer">
+                <img src="./assets/Framework.png" alt="Merge3D framework" />
+              </a>
+              <figcaption>The overall pipeline of Merge3D.</figcaption>
+            </figure>
+          </div>
+
+          <div class="three-column">
+            <article class="mini-card">
+              <h3>1. Select</h3>
+              <p>
+                2D attention identifies dominant tokens with strong semantic
+                saliency.
+              </p>
+            </article>
+            <article class="mini-card">
+              <h3>2. Group</h3>
+              <p>
+                3D-aware similarity encourages merging within spatially coherent
+                regions.
+              </p>
+            </article>
+            <article class="mini-card">
+              <h3>3. Preserve</h3>
+              <p>
+                Geometry and semantics are fused to keep spatial reasoning and
+                grounding robust under compression.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="results">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Results</p>
+            <h2>Main quantitative highlights</h2>
+          </div>
+
+          <div class="results-cards">
+            <article class="result-card">
+              <h3>Scan2Cap</h3>
+              <p class="result-big">73.4 CIDEr @ 30% tokens</p>
+              <p>
+                Retains 93.4% of baseline CIDEr while running 2.5× faster.
+              </p>
+            </article>
+            <article class="result-card">
+              <h3>CV-Bench</h3>
+              <p class="result-big">79.6 avg @ 30% tokens</p>
+              <p>
+                Preserves about 97.0% of the baseline average accuracy with 70%
+                fewer tokens.
+              </p>
+            </article>
+            <article class="result-card">
+              <h3>BLINK</h3>
+              <p class="result-big">67.5 avg @ 30% tokens</p>
+              <p>
+                Keeps 98.7% of baseline average performance while strongly
+                reducing compute.
+              </p>
+            </article>
+          </div>
+
+          <div class="efficiency-strip">
+            <div>
+              <span class="label">Baseline</span>
+              <strong>1623 tokens</strong>
+              <span>10.58s</span>
+            </div>
+            <div>
+              <span class="label">Merge3D 30%</span>
+              <strong>564 tokens</strong>
+              <span>4.14s</span>
+            </div>
+            <div>
+              <span class="label">Merge3D 5%</span>
+              <strong>186 tokens</strong>
+              <span>3.40s</span>
+            </div>
+          </div>
+
+          <div class="details-grid">
+            <details class="table-details" open>
+              <summary>Detailed benchmark tables</summary>
+
+              <h3>Scan2Cap</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Model</th>
+                      <th>Retention</th>
+                      <th>C@0.5</th>
+                      <th>B-4@0.5</th>
+                      <th>M@0.5</th>
+                      <th>R@0.5</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Baseline</td>
+                      <td>100%</td>
+                      <td>78.6</td>
+                      <td>40.9</td>
+                      <td>28.6</td>
+                      <td>62.4</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D</td>
+                      <td>30%</td>
+                      <td>73.4</td>
+                      <td>39.3</td>
+                      <td>28.2</td>
+                      <td>61.6</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D</td>
+                      <td>10%</td>
+                      <td>66.1</td>
+                      <td>37.9</td>
+                      <td>27.5</td>
+                      <td>61.1</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D</td>
+                      <td>5%</td>
+                      <td>57.9</td>
+                      <td>36.1</td>
+                      <td>26.8</td>
+                      <td>60.5</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>CV-Bench</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Model</th>
+                      <th>Retention</th>
+                      <th>2D</th>
+                      <th>3D</th>
+                      <th>Avg.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Baseline</td>
+                      <td>100%</td>
+                      <td>72.9</td>
+                      <td>91.3</td>
+                      <td>82.1</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D</td>
+                      <td>30%</td>
+                      <td>71.0</td>
+                      <td>88.1</td>
+                      <td>79.6</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D</td>
+                      <td>10%</td>
+                      <td>68.6</td>
+                      <td>86.3</td>
+                      <td>77.5</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D</td>
+                      <td>5%</td>
+                      <td>67.5</td>
+                      <td>82.0</td>
+                      <td>74.8</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>BLINK</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Model</th>
+                      <th>Retention</th>
+                      <th>Depth</th>
+                      <th>Spatial</th>
+                      <th>Multi-View</th>
+                      <th>Avg.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Baseline</td>
+                      <td>100%</td>
+                      <td>79.8</td>
+                      <td>67.8</td>
+                      <td>57.1</td>
+                      <td>68.4</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D</td>
+                      <td>30%</td>
+                      <td>78.2</td>
+                      <td>68.5</td>
+                      <td>55.6</td>
+                      <td>67.5</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D</td>
+                      <td>10%</td>
+                      <td>70.2</td>
+                      <td>66.4</td>
+                      <td>55.6</td>
+                      <td>64.1</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D</td>
+                      <td>5%</td>
+                      <td>62.9</td>
+                      <td>62.9</td>
+                      <td>55.6</td>
+                      <td>60.5</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </details>
+
+            <details class="table-details">
+              <summary>Ablation and qualitative summary</summary>
+              <div class="prose">
+                <p>
+                  On CV-Bench at 5% retention, using only 2D similarity gives
+                  72.8 average accuracy, using only 3D similarity gives 72.3,
+                  and using both reaches 74.8.
+                </p>
+                <p>
+                  This shows that semantic cues and geometric cues are
+                  complementary: 2D similarity helps suppress semantic
+                  confusion, while 3D similarity stabilizes localization and
+                  cross-view consistency.
+                </p>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>2D similarity</th>
+                      <th>3D similarity</th>
+                      <th>2D</th>
+                      <th>3D</th>
+                      <th>Avg.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>✓</td>
+                      <td>✗</td>
+                      <td>64.8</td>
+                      <td>80.7</td>
+                      <td>72.8</td>
+                    </tr>
+                    <tr>
+                      <td>✗</td>
+                      <td>✓</td>
+                      <td>63.7</td>
+                      <td>80.8</td>
+                      <td>72.3</td>
+                    </tr>
+                    <tr>
+                      <td>✓</td>
+                      <td>✓</td>
+                      <td>67.5</td>
+                      <td>82.0</td>
+                      <td>74.8</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="visuals">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Visualizations</p>
+            <h2>Figures from the paper</h2>
+          </div>
+
+          <div class="gallery-grid">
+            <figure class="image-card">
+              <a href="./assets/pdfs/Feature_analysis.pdf" target="_blank" rel="noreferrer">
+                <img src="./assets/Feature_analysis.png" alt="Feature analysis" />
+              </a>
+              <figcaption>
+                Feature analysis of 2D and 3D representations.
+              </figcaption>
+            </figure>
+
+            <figure class="image-card">
+              <a href="./assets/pdfs/Experiment_Comparison.pdf" target="_blank" rel="noreferrer">
+                <img
+                  src="./assets/Experiment_Comparison.png"
+                  alt="Qualitative comparison on 3D grounding"
+                />
+              </a>
+              <figcaption>
+                Qualitative comparison on 3D grounding.
+              </figcaption>
+            </figure>
+
+            <figure class="image-card">
+              <a href="./assets/pdfs/Experiment_Ablation.pdf" target="_blank" rel="noreferrer">
+                <img
+                  src="./assets/Experiment_Ablation.png"
+                  alt="Ablation visualization"
+                />
+              </a>
+              <figcaption>
+                Ablation visualization of 2D and 3D similarity.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="bibtex">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Citation</p>
+            <h2>BibTeX</h2>
+          </div>
+
+          <div class="bibtex-card">
+            <button id="copy-bibtex" class="copy-button" type="button">
+              Copy
+            </button>
+            <pre id="bibtex-block">@misc{pan2026merge3d,
+  title  = {Merge3D: Efficient 3D Multimodal LLMs via Joint 2D-3D Token Merging},
+  author = {Tianbo Pan and Xingyi Yang and Xinchao Wang},
+  year   = {2026},
+  note   = {Project page / manuscript}
+}</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>Merge3D project page.</p>
+        <p>
+          Please update the paper / arXiv / code links before public release.
+        </p>
+      </div>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
