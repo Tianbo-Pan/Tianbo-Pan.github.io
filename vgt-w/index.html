@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Visual Geometry Transformer in the Wild (VGTW) is a feed-forward framework for distractor-free 3D reconstruction from inconsistent image collections.">
+  <meta name="keywords" content="VGTW, VGGT, 3D reconstruction, distractor suppression, multiview geometry">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visual Geometry Transformer in the Wild: Distractor-Free 3D Reconstruction</title>
+
+  <meta property="og:title" content="Visual Geometry Transformer in the Wild: Distractor-Free 3D Reconstruction">
+  <meta property="og:description"
+    content="A feed-forward method for robust 3D reconstruction from in-the-wild images with transient distractors.">
+  <meta property="og:url" content="https://tianbo-pan.github.io/vgt-w/">
+  <meta property="og:image" content="https://tianbo-pan.github.io/vgt-w/resources/teaser_fig.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Visual Geometry Transformer in the Wild: Distractor-Free 3D Reconstruction">
+  <meta property="twitter:description"
+    content="A feed-forward method for robust 3D reconstruction from in-the-wild images with transient distractors.">
+  <link rel="canonical" href="https://tianbo-pan.github.io/vgt-w/">
+
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+</head>
+
+<body>
+  <section class="hero publication-header">
+    <div class="hero-body">
+      <div class="container is-max-desktop has-text-centered">
+        <h1 class="title publication-title">Visual Geometry Transformer in the Wild: Distractor-Free 3D Reconstruction</h1>
+        <p class="publication-tagline">Feed-forward 3D reconstruction from inconsistent, distractor-heavy image collections.</p>
+
+        <div class="is-size-5 publication-authors">
+          <span class="author-block">Tianbo Pan<sup>1</sup>,</span>
+          <span class="author-block">Xingyi Yang<sup>1</sup>,</span>
+          <span class="author-block">Shizun Wang<sup>1</sup>,</span>
+          <span class="author-block">Xinchao Wang<sup>1</sup></span>
+        </div>
+        <div class="is-size-6 publication-affiliations">
+          <span class="author-block"><sup>1</sup>National University of Singapore</span>
+        </div>
+
+        <div class="publication-links">
+          <span class="link-block">
+            <a href="#abstract" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon"><i class="fas fa-align-left"></i></span>
+              <span>Abstract</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="#method" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon"><i class="fas fa-project-diagram"></i></span>
+              <span>Method</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="#experiments" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon"><i class="fas fa-chart-line"></i></span>
+              <span>Experiments</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon"><i class="fas fa-quote-right"></i></span>
+              <span>BibTeX</span>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser-block">
+    <div class="container is-max-desktop">
+      <div class="media-card media-card--soft teaser-image-card">
+        <img id="teaser-image" src="./resources/teaser_fig.png" alt="Teaser figure for VGTW">
+      </div>
+      <p class="teaser-caption has-text-centered">
+        VGTW suppresses transient distractors while preserving geometry that stays consistent across views.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="abstract">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full">
+          <h2 class="title is-4 section-title has-text-centered">Abstract</h2>
+          <div class="content has-text-justified section-copy">
+            <p>
+              Current end-to-end multi-view 3D reconstruction methods achieve impressive results, but they rely on a restrictive static-world assumption: input collections are expected to be distractor-free and geometrically consistent across views. This assumption breaks in real captures, where transient objects, occluders, and inconsistent viewpoints frequently appear.
+            </p>
+            <p>
+              We propose <strong>Visual Geometry Transformer in the Wild (VGTW)</strong>, a feed-forward framework for robust reconstruction from inconsistent image sets. Our core idea is to explicitly isolate distractor-contaminated regions while preserving the stable scene content shared across views. To do this, we introduce a <strong>Distractor-aware Training (DAT)</strong> strategy with distractor suppression, cross-view consistency, and an auxiliary mask-prediction head trained from pixel-level distractor annotations.
+            </p>
+            <p>
+              The resulting model directly predicts clean point maps and depth without extra 3D supervision, and it generalizes well to challenging in-the-wild scenes with heavy occlusions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="method">
+    <div class="container is-max-desktop method-section-container">
+      <h2 class="title is-4 section-title has-text-centered">Method Overview</h2>
+      <div class="columns is-centered">
+        <div class="column is-full">
+          <div class="content has-text-justified section-copy">
+            <p>
+              VGTW builds on the feed-forward geometry prediction pipeline and introduces a distractor-aware training strategy tailored for inconsistent image collections. Image tokens interact through frame-wise and global attention, while DAT explicitly discourages distractor leakage and preserves consistent geometry.
+            </p>
+          </div>
+          <div class="media-card media-card--plain method-figure-card">
+            <img id="architecture-img" src="./resources/frame_work.png" alt="VGTW framework overview">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="experiments">
+    <div class="container is-max-desktop">
+      <h2 class="title is-4 section-title has-text-centered">Experiments</h2>
+
+      <div class="result-card">
+        <div class="table-container result-table wide-table">
+          <table class="table is-fullwidth is-striped is-hoverable comparison-table comparison-table--wide experiment-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Method</th>
+                <th rowspan="2">Processing</th>
+                <th colspan="3">Low Occlusion</th>
+                <th colspan="3">Medium Occlusion</th>
+                <th colspan="3">High Occlusion</th>
+                <th colspan="3">Overall Average</th>
+              </tr>
+              <tr>
+                <th>Acc &darr;</th>
+                <th>Comp &darr;</th>
+                <th>NC &uarr;</th>
+                <th>Acc &darr;</th>
+                <th>Comp &darr;</th>
+                <th>NC &uarr;</th>
+                <th>Acc &darr;</th>
+                <th>Comp &darr;</th>
+                <th>NC &uarr;</th>
+                <th>Acc &darr;</th>
+                <th>Comp &darr;</th>
+                <th>NC &uarr;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DUSt3R</td>
+                <td>Pair-wise</td>
+                <td>0.043</td>
+                <td>0.035</td>
+                <td>0.682</td>
+                <td>0.044</td>
+                <td>0.102</td>
+                <td>0.763</td>
+                <td>0.026</td>
+                <td>0.102</td>
+                <td>0.798</td>
+                <td>0.037</td>
+                <td>0.080</td>
+                <td>0.747</td>
+              </tr>
+              <tr>
+                <td>MaSt3R</td>
+                <td>Pair-wise</td>
+                <td>0.044</td>
+                <td>0.120</td>
+                <td>0.636</td>
+                <td>0.064</td>
+                <td>0.136</td>
+                <td>0.691</td>
+                <td>0.028</td>
+                <td>0.216</td>
+                <td>0.751</td>
+                <td>0.045</td>
+                <td>0.157</td>
+                <td>0.692</td>
+              </tr>
+              <tr>
+                <td>Fast3R</td>
+                <td>Multi-image</td>
+                <td>0.037</td>
+                <td>0.049</td>
+                <td>0.639</td>
+                <td>0.057</td>
+                <td><strong>0.062</strong></td>
+                <td>0.681</td>
+                <td>0.030</td>
+                <td>0.096</td>
+                <td>0.720</td>
+                <td>0.041</td>
+                <td>0.069</td>
+                <td>0.680</td>
+              </tr>
+              <tr>
+                <td>VGGT</td>
+                <td>Multi-image</td>
+                <td>0.040</td>
+                <td>0.057</td>
+                <td>0.663</td>
+                <td>0.051</td>
+                <td>0.120</td>
+                <td>0.632</td>
+                <td>0.032</td>
+                <td>0.262</td>
+                <td>0.625</td>
+                <td>0.041</td>
+                <td>0.146</td>
+                <td>0.640</td>
+              </tr>
+              <tr class="row-highlight">
+                <td>VGTW(VGGT)</td>
+                <td>Multi-image</td>
+                <td>0.033</td>
+                <td><strong>0.029</strong></td>
+                <td>0.695</td>
+                <td>0.041</td>
+                <td>0.095</td>
+                <td><strong>0.724</strong></td>
+                <td>0.025</td>
+                <td>0.228</td>
+                <td>0.693</td>
+                <td>0.033</td>
+                <td>0.117</td>
+                <td>0.704</td>
+              </tr>
+              <tr>
+                <td>&pi;<sup>3</sup></td>
+                <td>Multi-image</td>
+                <td>0.034</td>
+                <td>0.051</td>
+                <td><strong>0.699</strong></td>
+                <td>0.084</td>
+                <td>0.096</td>
+                <td>0.676</td>
+                <td>0.036</td>
+                <td>0.078</td>
+                <td><strong>0.753</strong></td>
+                <td>0.051</td>
+                <td>0.074</td>
+                <td><strong>0.709</strong></td>
+              </tr>
+              <tr class="row-highlight row-highlight--strong">
+                <td>VGTW(&pi;<sup>3</sup>)</td>
+                <td>Multi-image</td>
+                <td><strong>0.028</strong></td>
+                <td>0.033</td>
+                <td>0.625</td>
+                <td><strong>0.035</strong></td>
+                <td>0.073</td>
+                <td>0.715</td>
+                <td><strong>0.019</strong></td>
+                <td><strong>0.076</strong></td>
+                <td>0.734</td>
+                <td><strong>0.027</strong></td>
+                <td><strong>0.060</strong></td>
+                <td>0.692</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="comparison">
+    <div class="container is-max-desktop">
+      <h2 class="title is-4 section-title has-text-centered">Qualitative Comparison</h2>
+      <p class="section-subtitle has-text-centered">
+        Compare reconstructed geometry from <strong>VGTW</strong>, <strong>VGGT</strong>, and <strong>Easi3R</strong> across representative scenes.
+      </p>
+
+      <div class="model-container" id="model-compare-wrapper">
+        <div class="model-wrapper-comparison">
+          <div class="model-label">VGTW</div>
+          <model-viewer id="modelViewerComparison1" loading="eager" touch-action="pan-y" environment-image="legacy"
+            src="./resources/comparison/vgtw/corner.glb" zoom-sensitivity="0.2" camera-controls disable-tap
+            min-camera-orbit="auto auto 1m" max-camera-orbit="auto auto 10m" interaction-prompt="none"
+            shadow-intensity="0" ar style="width: 100%; height: 100%; background: #ffffff;">
+          </model-viewer>
+        </div>
+        <div class="model-wrapper-comparison">
+          <div class="model-label">VGGT</div>
+          <model-viewer id="modelViewerComparison2" loading="eager" touch-action="pan-y" environment-image="legacy"
+            src="./resources/comparison/vggt/corner.glb" zoom-sensitivity="0.2" camera-controls disable-tap
+            min-camera-orbit="auto auto 1m" max-camera-orbit="auto auto 10m" interaction-prompt="none"
+            shadow-intensity="0" ar style="width: 100%; height: 100%; background: #ffffff;">
+          </model-viewer>
+        </div>
+        <div class="model-wrapper-comparison">
+          <div class="model-label">Easi3R</div>
+          <model-viewer id="modelViewerComparison3" loading="eager" touch-action="pan-y" environment-image="legacy"
+            src="./resources/comparison/easi3r/corner.glb" zoom-sensitivity="0.2" camera-controls disable-tap
+            min-camera-orbit="auto auto 1m" max-camera-orbit="auto auto 10m" interaction-prompt="none"
+            shadow-intensity="0" ar style="width: 100%; height: 100%; background: #ffffff;">
+          </model-viewer>
+        </div>
+      </div>
+
+      <div class="thumbnail-strip">
+        <div class="thumbnail-container" id="thumbnail-comparison" data-selected-name="corner">
+          <video src="./resources/comparison/assets/corner_input.mp4" name="corner" loop playsinline muted preload="metadata"></video>
+          <video src="./resources/comparison/assets/crab2_input.mp4" name="crab2" loop playsinline muted preload="metadata"></video>
+          <video src="./resources/comparison/assets/spot_input.mp4" name="spot" loop playsinline muted preload="metadata"></video>
+          <video src="./resources/comparison/assets/android_input.mp4" name="android" loop playsinline muted preload="metadata"></video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title is-4 section-title has-text-centered">BibTeX</h2>
+      <pre><code>@misc{pan2026vgtw,
+  title={Visual Geometry Transformer in the Wild: Distractor-Free 3D Reconstruction},
+  author={Pan, Tianbo and Yang, Xingyi and Wang, Shizun and Wang, Xinchao},
+  year={2026},
+  note={Project page manuscript}
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p>
+              This webpage template is adapted from
+              <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>,
+              under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./static/js/comparison.js"></script>
+</body>
+
+</html>
