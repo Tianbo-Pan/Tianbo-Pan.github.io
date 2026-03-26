@@ -195,7 +195,12 @@ h1 {
 }
 
 .section-tight {
-  padding-top: 0.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 1rem;
+}
+
+.section-tight .container {
+  width: min(calc(100% - 1rem), 1380px);
 }
 
 .section-alt {
@@ -216,7 +221,6 @@ h1 {
 .result-card,
 .mini-card,
 .stat-card,
-.table-details,
 .bibtex-card {
   background: var(--surface);
   border: 1px solid rgba(219, 228, 240, 0.9);
@@ -230,12 +234,11 @@ h1 {
 }
 
 .hero-figure {
-  max-width: 1100px;
+  width: 100%;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 1.25rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 1rem;
+  text-align: center;
 }
 
 .hero-figure img,
@@ -245,8 +248,8 @@ h1 {
 }
 
 .hero-figure img {
-  width: auto;
-  max-width: min(100%, 1020px);
+  width: 100%;
+  max-width: 1260px;
   margin: 0 auto;
 }
 
@@ -317,73 +320,6 @@ h1 {
   max-width: 1120px;
   margin: 1.5rem auto 0;
   padding: 1rem;
-}
-
-.details-grid {
-  margin-top: 1.25rem;
-  display: grid;
-  gap: 1rem;
-}
-
-.table-details {
-  padding: 1rem 1rem 1.15rem;
-}
-
-.table-details summary {
-  cursor: pointer;
-  font-weight: 800;
-  list-style: none;
-}
-
-.table-details summary::-webkit-details-marker {
-  display: none;
-}
-
-.table-details summary::after {
-  content: " +";
-  color: var(--primary);
-}
-
-.table-details[open] summary::after {
-  content: " −";
-}
-
-.table-wrap {
-  overflow-x: auto;
-  margin-top: 1rem;
-}
-
-.benchmark-block + .benchmark-block {
-  margin-top: 1.5rem;
-}
-
-.metric-note {
-  margin: 0.35rem 0 0;
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 580px;
-}
-
-th,
-td {
-  padding: 0.8rem 0.85rem;
-  border-bottom: 1px solid var(--line);
-  text-align: left;
-  font-size: 0.95rem;
-}
-
-th {
-  background: var(--surface-soft);
-  color: var(--text);
-}
-
-tbody tr:hover {
-  background: rgba(46, 100, 255, 0.035);
 }
 
 .gallery-grid {
@@ -477,8 +413,7 @@ pre {
   .card,
   .stat-card,
   .mini-card,
-  .result-card,
-  .table-details {
+  .result-card {
     padding-left: 1rem;
     padding-right: 1rem;
   }
