@@ -30,7 +30,7 @@
           <a href="#overview">Overview</a>
           <a href="#method">Method</a>
           <a href="#results">Results</a>
-          <a href="#visuals">Visuals</a>
+          <a href="#qualitative">Qualitative</a>
           <a href="#bibtex">BibTeX</a>
         </nav>
       </div>
@@ -59,26 +59,17 @@
           </p>
 
           <div class="button-row">
-            <a class="button button-primary" href="./assets/pdfs/Teaser_figure.pdf" target="_blank" rel="noreferrer">Teaser PDF</a>
-            <a class="button" href="https://lavi-lab.github.io/VG-LLM/" target="_blank" rel="noreferrer">VG-LLM</a>
             <span class="button button-disabled" aria-disabled="true">Paper Coming Soon</span>
             <span class="button button-disabled" aria-disabled="true">arXiv Coming Soon</span>
             <span class="button button-disabled" aria-disabled="true">Code Coming Soon</span>
           </div>
-
-          <p class="helper-text">
-            This page is styled after the VG-LLM project page, with content
-            adapted to Merge3D.
-          </p>
         </div>
       </section>
 
       <section class="section section-tight">
         <div class="container">
           <figure class="hero-figure">
-            <a href="./assets/pdfs/Teaser_figure.pdf" target="_blank" rel="noreferrer">
-              <img src="./assets/Teaser_figure.png" alt="Merge3D teaser figure" />
-            </a>
+            <img src="./assets/Teaser_figure.png" alt="Merge3D teaser figure" />
             <figcaption>
               Performance comparison of Merge3D and baselines across token
               retention rates (30%, 10%, 5%).
@@ -114,25 +105,6 @@
               grounding, captioning, and spatial reasoning benchmarks including
               Scan2Cap, CV-Bench, and BLINK.
             </p>
-          </div>
-
-          <div class="stats-grid">
-            <article class="stat-card">
-              <h3>70%</h3>
-              <p>maximum visual token reduction</p>
-            </article>
-            <article class="stat-card">
-              <h3>3.1×</h3>
-              <p>measured end-to-end inference speedup</p>
-            </article>
-            <article class="stat-card">
-              <h3>SemGeo</h3>
-              <p>joint 2D semantic + 3D geometric token merging</p>
-            </article>
-            <article class="stat-card">
-              <h3>3 tasks</h3>
-              <p>grounding, captioning, and spatial reasoning</p>
-            </article>
           </div>
         </div>
       </section>
@@ -211,56 +183,12 @@
         <div class="container">
           <div class="section-heading">
             <p class="eyebrow">Results</p>
-            <h2>Main quantitative highlights</h2>
-          </div>
-
-          <div class="results-cards">
-            <article class="result-card">
-              <h3>Scan2Cap</h3>
-              <p class="result-big">73.4 CIDEr @ 30% tokens</p>
-              <p>
-                Retains 93.4% of baseline CIDEr while running 2.5× faster.
-              </p>
-            </article>
-            <article class="result-card">
-              <h3>CV-Bench</h3>
-              <p class="result-big">79.6 avg @ 30% tokens</p>
-              <p>
-                Preserves about 97.0% of the baseline average accuracy with 70%
-                fewer tokens.
-              </p>
-            </article>
-            <article class="result-card">
-              <h3>BLINK</h3>
-              <p class="result-big">67.5 avg @ 30% tokens</p>
-              <p>
-                Keeps 98.7% of baseline average performance while strongly
-                reducing compute.
-              </p>
-            </article>
-          </div>
-
-          <div class="efficiency-strip">
-            <div>
-              <span class="label">Baseline</span>
-              <strong>1623 tokens</strong>
-              <span>10.58s</span>
-            </div>
-            <div>
-              <span class="label">Merge3D 30%</span>
-              <strong>564 tokens</strong>
-              <span>4.14s</span>
-            </div>
-            <div>
-              <span class="label">Merge3D 5%</span>
-              <strong>186 tokens</strong>
-              <span>3.40s</span>
-            </div>
+            <h2>Quantitative result</h2>
           </div>
 
           <div class="details-grid">
             <details class="table-details" open>
-              <summary>Detailed benchmark tables</summary>
+              <summary>Quantitative result</summary>
 
               <h3>Scan2Cap</h3>
               <div class="table-wrap">
@@ -285,15 +213,63 @@
                       <td>62.4</td>
                     </tr>
                     <tr>
-                      <td>Merge3D</td>
-                      <td>30%</td>
-                      <td>73.4</td>
-                      <td>39.3</td>
-                      <td>28.2</td>
-                      <td>61.6</td>
+                      <td>randomzip</td>
+                      <td>5%</td>
+                      <td>51.2</td>
+                      <td>35.3</td>
+                      <td>26.3</td>
+                      <td>60.2</td>
                     </tr>
                     <tr>
-                      <td>Merge3D</td>
+                      <td>Visionzip-3D</td>
+                      <td>5%</td>
+                      <td>52.4</td>
+                      <td>37.1</td>
+                      <td>27.0</td>
+                      <td>61.0</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-2D</td>
+                      <td>5%</td>
+                      <td>49.5</td>
+                      <td>34.3</td>
+                      <td>26.1</td>
+                      <td>60.3</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D*</td>
+                      <td>5%</td>
+                      <td>57.9</td>
+                      <td>36.1</td>
+                      <td>26.8</td>
+                      <td>60.5</td>
+                    </tr>
+                    <tr>
+                      <td>randomzip</td>
+                      <td>10%</td>
+                      <td>58.5</td>
+                      <td>36.7</td>
+                      <td>26.8</td>
+                      <td>60.7</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-3D</td>
+                      <td>10%</td>
+                      <td>61.0</td>
+                      <td>37.1</td>
+                      <td>27.0</td>
+                      <td>61.0</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-2D</td>
+                      <td>10%</td>
+                      <td>59.5</td>
+                      <td>36.8</td>
+                      <td>26.9</td>
+                      <td>60.8</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D*</td>
                       <td>10%</td>
                       <td>66.1</td>
                       <td>37.9</td>
@@ -301,12 +277,36 @@
                       <td>61.1</td>
                     </tr>
                     <tr>
-                      <td>Merge3D</td>
-                      <td>5%</td>
-                      <td>57.9</td>
-                      <td>36.1</td>
-                      <td>26.8</td>
-                      <td>60.5</td>
+                      <td>randomzip</td>
+                      <td>30%</td>
+                      <td>70.2</td>
+                      <td>39.0</td>
+                      <td>27.8</td>
+                      <td>61.7</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-3D</td>
+                      <td>30%</td>
+                      <td>72.2</td>
+                      <td>39.4</td>
+                      <td>28.0</td>
+                      <td>61.9</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-2D</td>
+                      <td>30%</td>
+                      <td>71.9</td>
+                      <td>39.3</td>
+                      <td>28.0</td>
+                      <td>61.8</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D*</td>
+                      <td>30%</td>
+                      <td>73.4</td>
+                      <td>39.3</td>
+                      <td>28.2</td>
+                      <td>61.6</td>
                     </tr>
                   </tbody>
                 </table>
@@ -333,25 +333,88 @@
                       <td>82.1</td>
                     </tr>
                     <tr>
-                      <td>Merge3D</td>
-                      <td>30%</td>
-                      <td>71.0</td>
-                      <td>88.1</td>
-                      <td>79.6</td>
+                      <td>randomzip</td>
+                      <td>5%</td>
+                      <td>60.3</td>
+                      <td>69.9</td>
+                      <td>65.1</td>
                     </tr>
                     <tr>
-                      <td>Merge3D</td>
+                      <td>Visionzip-3D</td>
+                      <td>5%</td>
+                      <td>59.2</td>
+                      <td>68.0</td>
+                      <td>63.6</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-2D</td>
+                      <td>5%</td>
+                      <td>61.8</td>
+                      <td>76.1</td>
+                      <td>68.9</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D*</td>
+                      <td>5%</td>
+                      <td>67.5</td>
+                      <td>82.0</td>
+                      <td>74.8</td>
+                    </tr>
+                    <tr>
+                      <td>randomzip</td>
+                      <td>10%</td>
+                      <td>62.7</td>
+                      <td>76.4</td>
+                      <td>69.5</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-3D</td>
+                      <td>10%</td>
+                      <td>67.5</td>
+                      <td>75.3</td>
+                      <td>68.7</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-2D</td>
+                      <td>10%</td>
+                      <td>66.3</td>
+                      <td>81.9</td>
+                      <td>74.1</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D*</td>
                       <td>10%</td>
                       <td>68.6</td>
                       <td>86.3</td>
                       <td>77.5</td>
                     </tr>
                     <tr>
-                      <td>Merge3D</td>
-                      <td>5%</td>
+                      <td>randomzip</td>
+                      <td>30%</td>
+                      <td>69.0</td>
+                      <td>85.6</td>
+                      <td>77.3</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-3D</td>
+                      <td>30%</td>
                       <td>67.5</td>
-                      <td>82.0</td>
-                      <td>74.8</td>
+                      <td>83.1</td>
+                      <td>75.3</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-2D</td>
+                      <td>30%</td>
+                      <td>71.1</td>
+                      <td>87.9</td>
+                      <td>79.5</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D*</td>
+                      <td>30%</td>
+                      <td>71.0</td>
+                      <td>88.1</td>
+                      <td>79.6</td>
                     </tr>
                   </tbody>
                 </table>
@@ -380,15 +443,63 @@
                       <td>68.4</td>
                     </tr>
                     <tr>
-                      <td>Merge3D</td>
-                      <td>30%</td>
-                      <td>78.2</td>
-                      <td>68.5</td>
+                      <td>randomzip</td>
+                      <td>5%</td>
                       <td>55.6</td>
-                      <td>67.5</td>
+                      <td>56.6</td>
+                      <td>55.6</td>
+                      <td>56.0</td>
                     </tr>
                     <tr>
-                      <td>Merge3D</td>
+                      <td>Visionzip-3D</td>
+                      <td>5%</td>
+                      <td>53.2</td>
+                      <td>60.1</td>
+                      <td>55.6</td>
+                      <td>56.3</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-2D</td>
+                      <td>5%</td>
+                      <td>58.9</td>
+                      <td>59.4</td>
+                      <td>55.6</td>
+                      <td>58.0</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D*</td>
+                      <td>5%</td>
+                      <td>62.9</td>
+                      <td>62.9</td>
+                      <td>55.6</td>
+                      <td>60.5</td>
+                    </tr>
+                    <tr>
+                      <td>randomzip</td>
+                      <td>10%</td>
+                      <td>54.8</td>
+                      <td>57.3</td>
+                      <td>54.9</td>
+                      <td>55.7</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-3D</td>
+                      <td>10%</td>
+                      <td>51.6</td>
+                      <td>61.5</td>
+                      <td>55.6</td>
+                      <td>56.6</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-2D</td>
+                      <td>10%</td>
+                      <td>70.2</td>
+                      <td>62.9</td>
+                      <td>55.6</td>
+                      <td>62.9</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D*</td>
                       <td>10%</td>
                       <td>70.2</td>
                       <td>66.4</td>
@@ -396,65 +507,36 @@
                       <td>64.1</td>
                     </tr>
                     <tr>
-                      <td>Merge3D</td>
-                      <td>5%</td>
-                      <td>62.9</td>
-                      <td>62.9</td>
+                      <td>randomzip</td>
+                      <td>30%</td>
+                      <td>61.3</td>
+                      <td>64.3</td>
+                      <td>54.1</td>
+                      <td>59.9</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-3D</td>
+                      <td>30%</td>
+                      <td>64.5</td>
+                      <td>64.3</td>
+                      <td>57.9</td>
+                      <td>62.2</td>
+                    </tr>
+                    <tr>
+                      <td>Visionzip-2D</td>
+                      <td>30%</td>
+                      <td>75.8</td>
+                      <td>65.7</td>
+                      <td>56.3</td>
+                      <td>65.9</td>
+                    </tr>
+                    <tr>
+                      <td>Merge3D*</td>
+                      <td>30%</td>
+                      <td>78.2</td>
+                      <td>68.5</td>
                       <td>55.6</td>
-                      <td>60.5</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </details>
-
-            <details class="table-details">
-              <summary>Ablation and qualitative summary</summary>
-              <div class="prose">
-                <p>
-                  On CV-Bench at 5% retention, using only 2D similarity gives
-                  72.8 average accuracy, using only 3D similarity gives 72.3,
-                  and using both reaches 74.8.
-                </p>
-                <p>
-                  This shows that semantic cues and geometric cues are
-                  complementary: 2D similarity helps suppress semantic
-                  confusion, while 3D similarity stabilizes localization and
-                  cross-view consistency.
-                </p>
-              </div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>2D similarity</th>
-                      <th>3D similarity</th>
-                      <th>2D</th>
-                      <th>3D</th>
-                      <th>Avg.</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>✓</td>
-                      <td>✗</td>
-                      <td>64.8</td>
-                      <td>80.7</td>
-                      <td>72.8</td>
-                    </tr>
-                    <tr>
-                      <td>✗</td>
-                      <td>✓</td>
-                      <td>63.7</td>
-                      <td>80.8</td>
-                      <td>72.3</td>
-                    </tr>
-                    <tr>
-                      <td>✓</td>
-                      <td>✓</td>
                       <td>67.5</td>
-                      <td>82.0</td>
-                      <td>74.8</td>
                     </tr>
                   </tbody>
                 </table>
@@ -464,44 +546,23 @@
         </div>
       </section>
 
-      <section class="section section-alt" id="visuals">
+      <section class="section section-alt" id="qualitative">
         <div class="container">
           <div class="section-heading">
-            <p class="eyebrow">Visualizations</p>
-            <h2>Figures from the paper</h2>
+            <p class="eyebrow">Qualitative</p>
+            <h2>Qualitative comparison</h2>
           </div>
 
-          <div class="gallery-grid">
-            <figure class="image-card">
-              <a href="./assets/pdfs/Feature_analysis.pdf" target="_blank" rel="noreferrer">
-                <img src="./assets/Feature_analysis.png" alt="Feature analysis" />
-              </a>
-              <figcaption>
-                Feature analysis of 2D and 3D representations.
-              </figcaption>
-            </figure>
-
-            <figure class="image-card">
+          <div class="single-figure-grid">
+            <figure class="image-card single-figure-card">
               <a href="./assets/pdfs/Experiment_Comparison.pdf" target="_blank" rel="noreferrer">
                 <img
                   src="./assets/Experiment_Comparison.png"
-                  alt="Qualitative comparison on 3D grounding"
+                  alt="Figure 4 qualitative comparison on 3D grounding"
                 />
               </a>
               <figcaption>
-                Qualitative comparison on 3D grounding.
-              </figcaption>
-            </figure>
-
-            <figure class="image-card">
-              <a href="./assets/pdfs/Experiment_Ablation.pdf" target="_blank" rel="noreferrer">
-                <img
-                  src="./assets/Experiment_Ablation.png"
-                  alt="Ablation visualization"
-                />
-              </a>
-              <figcaption>
-                Ablation visualization of 2D and 3D similarity.
+                Figure 4. Qualitative comparison of 3D object detection performance across different models on the 3D grounding task.
               </figcaption>
             </figure>
           </div>

@@ -229,10 +229,19 @@ h1 {
   overflow: hidden;
 }
 
+.hero-figure {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
 .hero-figure img,
 .image-card img {
   width: 100%;
   height: auto;
+}
+
+.hero-figure img {
+  margin: 0 auto;
 }
 
 .hero-figure figcaption,
@@ -397,6 +406,15 @@ tbody tr:hover {
 
 .gallery-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.single-figure-grid {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.single-figure-card img {
+  margin: 0 auto;
 }
 
 .bibtex-card {
